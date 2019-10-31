@@ -1,26 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import BurgerPane from './BurgerPane';
+import IngredientList from './IngredientList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    ingredients: this.props.ingredients,
+    stack: []
+  }
+
+  handleIngredientChange = (e, id) => {
+    const stackedArray = [...this.state.stack]
+    stackedArray.push(this.state.ingredients[id])
+        
+    this.setState ({
+          stack: stackedArray
+        })
+      }
+  
+  handleClear = (e) => {
+    this.setState({
+      stack: []
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <IngredientList allIngredients={this.state.ingredients} onClick={this.handleIngredientChange} />
+        <BurgerPane  burger={this.state.stack} clearBurger={this.handleClear} />
+      </div>
+    )
+  }
 }
 
 export default App;
